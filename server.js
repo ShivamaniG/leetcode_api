@@ -7,26 +7,12 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
-/**
- * GET /api/profile/:username
- *
- * This endpoint uses Puppeteer to load the LeetCode profile page and extract:
- *
- * - Avatar: from an <img> with classes "h-20 w-20 rounded-lg object-cover"
- * - Name: from a <div> with class "text-label-1"
- * - Username: from a <div> with class "text-label-3"
- *
- * - Total Solved: from the circular progress indicator (e.g., "7/3450")
- * - Breakdown:
- *    - Easy: from the card showing "Easy" (e.g., "7/857")
- *    - Medium: from the card showing "Med." (e.g., "0/1795")
- *    - Hard: from the card showing "Hard" (e.g., "0/798")
- */
 app.get("/api/profile/:username", async (req, res) => {
   const usernameParam = req.params.username;
   try {
     const browser = await puppeteer.launch({
       headless: true,
+      executablePath: process.env.CHROME_BIN || '/usr/bin/chromium-browser',
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
@@ -87,7 +73,6 @@ app.get("/api/profile/:username", async (req, res) => {
 
       return {
         avatar,
-        name,
         username,
         totalSolved,
         breakdown: { easy, medium, hard }
