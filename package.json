@@ -5,6 +5,7 @@
     "puppeteer": "^24.2.0"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "postinstall": "npx puppeteer browsers install chrome"
   }
 }
