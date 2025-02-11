@@ -12,7 +12,6 @@ app.get("/api/profile/:username", async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.CHROME_BIN || '/usr/bin/chromium-browser',
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     const page = await browser.newPage();
